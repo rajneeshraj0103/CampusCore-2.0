@@ -222,6 +222,31 @@ Role (1) -------- (Many) User
 
 ---
 
+## Decision 8
+
+### Initial Administrator Strategy
+
+CampusCore requires an initial Administrator account to allow access to the system after the database is created.
+
+To support the learning version of CampusCore, the application will automatically seed one default Administrator account during database initialization.
+
+The seeded Administrator will contain:
+
+- Name
+- Email
+- PasswordHash
+- RoleId (Administrator)
+
+The password will always be stored as a hash and never in plain text.
+
+This approach allows the system to be used immediately after installation without requiring a separate setup process.
+
+In future production-ready versions, this strategy may be replaced by a secure setup wizard that allows the organization to create its first Administrator account during installation.
+
+**Status:** ✅ Accepted
+
+---
+
 # 8. Current Domain Model
 
 ```
@@ -325,6 +350,7 @@ Completed:
 - ✅ Role Seeding Strategy
 - ✅ Role–User Relationship
 - ✅ Business Rules Defined
+- ✅ Initial Administrator Strategy
 
 In Progress:
 
