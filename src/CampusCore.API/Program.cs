@@ -1,7 +1,8 @@
-
 using CampusCore.API.Middleware;
+using CampusCore.Application.Interfaces;
 using CampusCore.Application.Services;
 using CampusCore.Infrastructure.Data;
+using CampusCore.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace CampusCore.API
@@ -14,13 +15,17 @@ namespace CampusCore.API
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                .AddNewtonsoftJson();
 
             builder.Services.AddDbContext<CampusCoreDbContext>(options =>
             options.UseNpgsql(
                 builder.Configuration.GetConnectionString("CampusCoreDb")));
 
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
@@ -33,6 +38,8 @@ namespace CampusCore.API
             }
 
             app.UseHttpsRedirection();
+
+            app.UseMiddleware<GlobalExceptionMiddleware>();
 
             app.UseMiddleware<RequestLoggingMiddleware>();
 
